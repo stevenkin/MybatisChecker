@@ -1,0 +1,97 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+    http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.stevenkin</groupId>
+    <artifactId>mybatis-checker</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>mybatis-checker</name>
+    <description>一个Mybatis mapper xml文件检查辅助工具</description>
+    <properties>
+        <lombok.version>1.18.12</lombok.version>
+        <fastjson.version>1.2.59</fastjson.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>jdk.tools</groupId>
+            <artifactId>jdk.tools</artifactId>
+            <version>1.6</version>
+            <scope>system</scope>
+            <systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8</version>
+        </dependency>
+
+        <!-- slf4j + logback: -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.12</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <!-- 实现lsf4j接口并整合 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+    <plugins>
+        <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+            <!-- 设置为true以打印有关编译器相关的日志 -->
+            <verbose>true</verbose>
+            <!-- 允许在单独的进程中运行编译器。如果为false，则使用内置编译器；如果为true，则使用可执行文件。
+            要使compilerVersion标签生效，需要将fork设为true，用于明确表示编译版本配置可用
+            -->
+            <fork>true</fork>
+            <!-- 指定插件将使用的编译器的版本 -->
+            <compilerVersion>1.8</compilerVersion>
+            <!-- 源代码使用的JDK版本 -->
+            <source>1.8</source>
+            <!--<executable>${JAVA_HOME}/bin/javac</executable>-->
+            <!-- 需要生成的目标class文件的编译版本 -->
+            <target>1.8</target>
+            <!-- 需要生成的目标class文件的编译版本 -->
+            <encoding>utf-8</encoding>
+            <!--
+            重点！
+            https://stackoverflow.com/questions/38926255/maven-annotation-processing-processor-not-found
+            默认的,编译器会找到Processor配置,并且执行注解处理器,但此时注解处理器还没编译好,所以会报错,为了避免这种错误,需要做一下参数配置:
+            -->
+            <compilerArgument>-proc:none</compilerArgument>
+            <compilerArguments>
+                <!-- 重点！自定义注解处理器使用到了 com.sun.tools 包中的类,所以这里要确保引用 tools.jar-->
+                <classpath>${env.JAVA_HOME}/lib/tools.jar</classpath>
+            </compilerArguments>
+        </configuration>
+        </plugin>
+    </plugins>
+    </build>
+
+</project>
