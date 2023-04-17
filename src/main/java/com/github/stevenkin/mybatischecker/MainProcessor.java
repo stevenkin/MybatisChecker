@@ -3,12 +3,9 @@ package com.github.stevenkin.mybatischecker;
 import javax.annotation.processing.*;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import javax.tools.Diagnostic;
-import javax.tools.FileObject;
 import javax.tools.JavaFileManager;
 import javax.tools.StandardLocation;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -33,6 +30,10 @@ public class MainProcessor extends AbstractProcessor {
             Iterable<? extends File> result = (Iterable<? extends File>) getLocation.invoke(fileManager, StandardLocation.SOURCE_PATH);
             for (File file : result) {
                 if (file.exists()) {
+                    String path = file.getAbsolutePath();
+                    if (path.contains("target/generated-sources")) {
+                        continue;
+                    }
                     System.out.println("MainProcessor " + file.getAbsoluteFile());
                     //env.getMessager().printMessage(Diagnostic.Kind.NOTE, "MainProcessor " + file.getAbsoluteFile());
                 }
