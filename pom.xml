@@ -18,11 +18,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>jdk.tools</groupId>
-            <artifactId>jdk.tools</artifactId>
-            <version>1.6</version>
-            <scope>system</scope>
-            <systemPath>${env.JAVA_HOME}/lib/tools.jar</systemPath>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>2.0.2</version>
         </dependency>
 
         <dependency>
@@ -85,10 +83,6 @@
             默认的,编译器会找到Processor配置,并且执行注解处理器,但此时注解处理器还没编译好,所以会报错,为了避免这种错误,需要做一下参数配置:
             -->
             <compilerArgument>-proc:none</compilerArgument>
-            <compilerArguments>
-                <!-- 重点！自定义注解处理器使用到了 com.sun.tools 包中的类,所以这里要确保引用 tools.jar-->
-                <classpath>${env.JAVA_HOME}/lib/tools.jar</classpath>
-            </compilerArguments>
         </configuration>
         </plugin>
     </plugins>
